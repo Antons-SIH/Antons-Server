@@ -45,12 +45,11 @@ class Authentication(Resource):
         if check_password_hash(user.password, data['password']):
             # generates the JWT Token
             token = jwt.encode({
-            'user_id': user.id,
-            'user_type': user.user_type
+            'user_id': user.id
             # 'exp' : datetime.utcnow() + timedelta(minutes = 30)
             }, JWT_SECRET)
 
-            return ({"token":token.decode('UTF-8'),"message":"token sent"},201)
+            return ({"token":token.decode('UTF-8'), "user_type": user.user_type, "college": user.college,"message":"token sent"},201)
         
         return ({"message":"invalid password"},403)
 
