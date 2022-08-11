@@ -1,4 +1,4 @@
-from flask_restful import Resource, Api, reqparse
+from flask_restful import Resource, Api, reqparse, request
 import werkzeug
 from ml.OCR_dictionary import getAadharDictionary
 
@@ -11,5 +11,4 @@ class UploadImage(Resource):
         name=image_file.filename
         image_file.save('images/'+name)
         Dict= getAadharDictionary('images/'+name)
-
         return ({"messag":"file received successfully!","filename":name, "data":Dict})
