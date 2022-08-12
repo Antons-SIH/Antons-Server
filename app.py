@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 from resources.user import Authentication
-from resources.files import UploadAadhar, UploadPan
+from resources.upload import UploadAadhar, UploadPan
 
 app = Flask(__name__)
 
