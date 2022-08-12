@@ -49,7 +49,7 @@ class Authentication(Resource):
             # 'exp' : datetime.utcnow() + timedelta(minutes = 30)
             }, JWT_SECRET)
 
-            return ({"token":token.decode('UTF-8'), "user_type": user.user_type, "college": user.college,"message":"token sent"},201)
+            return ({"token":token.decode('UTF-8'), "email": user.email,"user_type": user.user_type, "college": user.college,"message":"token sent"},201)
         
         return ({"message":"invalid password"},403)
 
