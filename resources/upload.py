@@ -1,18 +1,26 @@
-from flask_restful import Resource, Api, reqparse, request
+from flask_restful import Resource, Api, reqparse
+from flask import request, json
 import werkzeug
 from ml.OCR_dictionary import getAadharDictionary
 from models.aicte import AicteModel
 from models.uid import UidModel
+from models.npci import NpciModel
+from models.user import UserModel
 from util.response import HttpApiResponse, HttpErrorResponse
+from util.time import nowTime
 
 class UploadAadhar(Resource):
     def post(self):
-        parse = reqparse.RequestParser()
-        parse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
-        args = parse.parse_args()
+
+        user_email = request.form['email']
+        image_file = request.files['file']
+
+        ## Check if user exist with this email
+        user = UserModel.find_by_email(user_email)
+        if not user:
+            return HttpErrorResponse ("No user found with this email"), 404
 
         ## Get image and save it to a local location for analysis
-        image_file = args['file']
         name=image_file.filename
         image_file.save('images/'+name+'.aadhar')
 
@@ -38,15 +46,23 @@ class UploadAadhar(Resource):
             print({"message":"Aadhar does not exists in UID database","aadharNumber":aadharNumber})
             uidVerified = False
         else:
+            user.aadhar = aadharNumber
+            user.aadhar_date = nowTime()
+            user.updated_at = nowTime()
+            user.save_to_db()
             print({"message":"Aadhar Verified from UID Database","aadharNumber":aadharNumber})
             uidVerified = True
 
         ## Check it with NPCI database
-        npciData = UidModel.find_by_aadhar(aadharNumber)
+        npciData = NpciModel.find_by_aadhar(aadharNumber)
         if not npciData:
             print({"message":"Aadhar does not exists in NPCI database","aadharNumber":aadharNumber})
             npciVerified = False
         else:
+            user.seeded_bank_acc = npciData.seeded_bank_acc
+            user.seeded_date = nowTime()
+            user.updated_at = nowTime()
+            user.save_to_db()
             print({"message":"Aadhar Verified from NPCI Database and recieved bank number","aadharNumber":aadharNumber})
             npciVerified = True
 
