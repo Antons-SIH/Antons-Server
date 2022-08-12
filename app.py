@@ -30,7 +30,7 @@ class App(Resource):
         return "Welcome to Antons-Flask-Backend"
 
 
-auth_routes=["/api/auth/login", "/api/auth/register"]
+auth_routes=["/api/auth/login", "/api/auth/register","/api/auth/profile"]
 api.add_resource(App, '/api')
 api.add_resource(Authentication, *auth_routes)
 api.add_resource(UploadAadhar,'/api/image/upload/aadhar')

@@ -1,7 +1,10 @@
+import json
+from urllib import response
 from sqlalchemy import null
 from flask_restful import (Resource, reqparse, request)
 from models.user import UserModel
 from  werkzeug.security import generate_password_hash, check_password_hash
+from util.response import HttpApiResponse, HttpErrorResponse
 # imports for PyJWT authentication
 import jwt
 
@@ -53,11 +56,35 @@ class Authentication(Resource):
         
         return ({"message":"invalid password"},403)
 
+    def profile(self):
+        if 'Authorization' in request.headers:
+            token=request.headers['Authorization']
+            payload=jwt.decode(token,JWT_SECRET)
+            # print(payload['user_id'])
+            user=UserModel.find_by_id(payload['user_id'])
+            aadharIndexes = [0,1,2,3,4,5,6,7]
+            panIndexes = [0,1,2,3,4,5]
+            new_character = 'X' 
+            aadhar=user.aadhar
+            pan=user.pan
+            if(aadhar):
+                for i in aadharIndexes:
+                    aadhar = aadhar[:i] + new_character + aadhar[i+1:]
+            if(pan):
+                for i in panIndexes:
+                    pan = pan[:i] + new_character + pan[i+1:]
+            # userDetails=json.dumps({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar,"aadhar_date":str(user.aadhar_date),"pan":pan,"pan_date":str(user.pan_date)}, default=str)
+            
+            return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar,"aadhar_date":str(user.aadhar_date),"pan":pan,"pan_date":str(user.pan_date)}), 200
+
     def post(self):
         url = request.url
         if "login" in url:
             return self.login()
         elif "register" in url:
             return self.register()
-        
-        
+
+    def get(self):
+        url = request.url
+        if "profile" in url:
+            return self.profile()
