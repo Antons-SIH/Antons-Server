@@ -62,20 +62,26 @@ class Authentication(Resource):
             payload=jwt.decode(token,JWT_SECRET)
             # print(payload['user_id'])
             user=UserModel.find_by_id(payload['user_id'])
-            aadharIndexes = [0,1,2,3,4,5,6,7]
-            panIndexes = [0,1,2,3,4,5]
-            new_character = 'X' 
-            aadhar=user.aadhar
-            pan=user.pan
-            if(aadhar):
-                for i in aadharIndexes:
-                    aadhar = aadhar[:i] + new_character + aadhar[i+1:]
-            if(pan):
-                for i in panIndexes:
-                    pan = pan[:i] + new_character + pan[i+1:]
-            # userDetails=json.dumps({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar,"aadhar_date":str(user.aadhar_date),"pan":pan,"pan_date":str(user.pan_date)}, default=str)
-            
-            return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar,"aadhar_date":str(user.aadhar_date),"pan":pan,"pan_date":str(user.pan_date)}), 200
+            if(user):
+                aadharIndexes = [0,1,2,3,4,5,6,7]
+                panIndexes = [0,1,2,3,4,5]
+                new_character = 'X' 
+                aadhar=user.aadhar
+                pan=user.pan
+                if(aadhar):
+                    for i in aadharIndexes:
+                        aadhar = aadhar[:i] + new_character + aadhar[i+1:]
+                if(pan):
+                    for i in panIndexes:
+                        pan = pan[:i] + new_character + pan[i+1:]
+
+                return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar,"aadhar_date":str(user.aadhar_date),"pan":pan,"pan_date":str(user.pan_date)}), 200
+                
+            else:
+                return HttpErrorResponse("Information denied, no authentication!"),404
+
+        else:
+            return HttpErrorResponse("Token Not found! Secured route access denied!"),404
 
     def post(self):
         url = request.url
