@@ -22,10 +22,10 @@ class UploadAadhar(Resource):
 
         ## Get image and save it to a local location for analysis
         name=image_file.filename
-        image_file.save('images/'+name+'.aadhar')
+        image_file.save('images/'+name)
 
         ## Send it to the ML model to extract the card details
-        Dict = getAadharDictionary('images/'+name+'.aadhar')
+        Dict = getAadharDictionary('images/'+name)
         print ({"message":"file received successfully!","filename":name, "data":Dict})
         aadharNumber = Dict["aadharNumber"]
 
