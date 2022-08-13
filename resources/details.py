@@ -3,10 +3,9 @@ from urllib import response
 from sqlalchemy import null
 from flask_restful import (Resource, reqparse, request)
 from models.user import UserModel
-from  werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
-# imports for PyJWT authentication
-import jwt
+from util.jwt import createToken,decodeToken
 
 JWT_SECRET="ANTONS"
 
@@ -14,11 +13,11 @@ class GetDetails(Resource):
     def adminLogin(self):
         if 'Authorization' in request.headers:
             token=request.headers['Authorization']
-            payload=jwt.decode(token,JWT_SECRET)
-            admin=UserModel.find_by_id(payload['user_id'])
+            id=decodeToken(token)
+            findUser=UserModel.find_by_id(id)
 
-            if(admin):
-                users=UserModel.find_college_users(admin.college)
+            if(findUser.user_type=="Admin"):
+                users=UserModel.find_college_users(findUser.college)
                 UserDetails=[]
                 for user in users:
                     UserDetails.append({
@@ -35,20 +34,19 @@ class GetDetails(Resource):
                         "seeded_bank_acc":user.seeded_bank_acc,
                         "seeded_date":str(user.seeded_date)
                     })
-                return HttpApiResponse({"users":UserDetails}),200
+                return HttpApiResponse(UserDetails),200
             else:
-                return HttpErrorResponse("User Not Found!"),404
-
+                return HttpErrorResponse("Details cannot be fetched. User not authorised!"),404
         else:
             return HttpErrorResponse("Access Denied!Access Token not found!"),404
 
     def superadminLogin(self):
         if 'Authorization' in request.headers:
             token=request.headers['Authorization']
-            payload=jwt.decode(token,JWT_SECRET)
-            superadmin=UserModel.find_by_id(payload['user_id'])
+            id=decodeToken(token)
+            findUser=UserModel.find_by_id(id)
 
-            if(superadmin):
+            if(findUser.user_type=="Super"):
                 users=UserModel.find_all()
                 UserDetails=[]
                 for user in users:
@@ -66,9 +64,9 @@ class GetDetails(Resource):
                         "seeded_bank_acc":user.seeded_bank_acc,
                         "seeded_date":str(user.seeded_date)
                     })
-                return HttpApiResponse({"users":UserDetails}),200
+                return HttpApiResponse(UserDetails),200
             else:
-                return HttpErrorResponse("User Not Found!"),404
+                return HttpErrorResponse("Details cannot be fetched. User not authorised!"),404
         else:
             return HttpErrorResponse("Access Denied!Access Token not found!"),404
 
