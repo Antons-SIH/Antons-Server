@@ -1,5 +1,4 @@
 import jwt
-import json
 JWT_SECRET="ANTONS"
 
 def createToken(id):
