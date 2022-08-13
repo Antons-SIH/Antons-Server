@@ -1,5 +1,7 @@
-from unicodedata import name
-import ml.OCR as OCR
+
+
+
+
 
 
 def isEnglish(str):
@@ -18,8 +20,19 @@ def matchesDateFormat(str):
 
 
 def matchesAadharFormat(str):
-    if len(str) == 14 and str[4] == " " and str[9] == " ":
-        return True
+    flag = True
+    str = str.replace(" ", "")
+    counter=0
+    for char in str:
+        if char.isdigit():
+            counter+=1
+    
+    if counter == 12:
+        flag=True
+
+    else:
+        flag = False
+    return flag
 
 
 def getAadharJSON(OcrList):
@@ -54,9 +67,13 @@ def getAadharJSON(OcrList):
     eleCounter = 0
     for ele in OcrList:
         if matchesAadharFormat(ele):
+            ano=""
+            for char in ele:
+                if char.isdigit()==True:
+                    ano+=char
             aadharFlag = True
-            aadharNumber = ele
-            aadharNumber = aadharNumber.replace(" ", "")
+            aadharNumber = ano
+            
             garbage = OcrList.pop(eleCounter)
             break
         eleCounter += 1
@@ -77,7 +94,7 @@ def getAadharJSON(OcrList):
             break
         eleCounter += 1
 
-    # removing marathi text
+    # removing marathi text in case some of it makes it through the pre-processor
     eleCounter = 0
     poppingList = []
     for ele in OcrList:
@@ -117,6 +134,7 @@ def getAadharJSON(OcrList):
 
     # testing
     # print(Dict)
+    #
     # print(dob)
     # print(aadharNumber)
     # print(gender)
@@ -124,4 +142,4 @@ def getAadharJSON(OcrList):
     # print(OcrList)
 
 # if __name__ == "__main__":
-#     getAadharJSON(OCR.getOCRList("/Users/aditya_gitte/Projects/SIH /SampleFiles/aditya_aadhar.jpeg"))
+#     getAadharJSON(OCR.getOCRList("/Users/aditya_gitte/Projects/SIH /Machine Learning/SampleFiles/Ath_aadharCard.jpeg"))
