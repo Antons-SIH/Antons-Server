@@ -1,4 +1,5 @@
 def HttpResponse(success, data, error):
+    
     return ({ 'success': success, 'data': data, 'error': error })
 
 def HttpApiResponse(data):

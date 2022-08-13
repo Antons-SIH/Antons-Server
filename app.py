@@ -8,13 +8,20 @@ app = Flask(__name__)
 
 cors=CORS(app,resources={r'/api/*':{'origins':'*'}})
 app.config['CORS_HEADERS'] = 'Content-Type'
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://xdzdamxo:4Fh_Y5nipenpeNZCSnv_3VyabOEYgPC9@tiny.db.elephantsql.com/xdzdamxo'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'
 api = Api(app)
 
+@app.after_request
+def apply_caching(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET,HEAD,OPTIONS,POST,PUT"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Max-Age"] = "86400"
+    return response
 
 from db import db
 db.init_app(app)
