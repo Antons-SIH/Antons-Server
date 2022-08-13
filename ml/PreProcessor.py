@@ -26,8 +26,8 @@ def getOCRListCoordinates(path):
 
 # Use this function to remove any non english words from the image, this function alters the original image
 def removeMarathiWordsfromImage(path):
-    dataList=getOCRListCoordinates(path)[0]
-    coordinatesList=getOCRListCoordinates(path)[1]
+    dataList, coordinatesList=getOCRListCoordinates(path)
+    
     # print(dataList)
     # print("\n")
     # print(coordinatesList)
