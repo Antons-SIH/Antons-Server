@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 cors=CORS(app,resources={r'/api/*':{'origins':'*'}})
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://xdzdamxo:4Fh_Y5nipenpeNZCSnv_3VyabOEYgPC9@tiny.db.elephantsql.com/xdzdamxo'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://antons:SIH-2022@antons-database.postgres.database.azure.com/postgres?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'
