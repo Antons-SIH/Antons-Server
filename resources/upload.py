@@ -3,8 +3,7 @@ from flask import request
 import werkzeug
 from models.user import UserModel
 from util.response import HttpApiResponse, HttpErrorResponse
-import threading
-import requests
+import threading, requests, time
 
 class UploadAadhar(Resource):
     def post(self):
@@ -17,17 +16,20 @@ class UploadAadhar(Resource):
         if not user:
             return HttpErrorResponse ("No user found with this email"), 404
 
-        ## Get image and save it to a local location for analysis
+        ## Get image and upload for analysis
         name=image_file.filename
         image_file.save('images/'+name)
 
-        def long_running_task(**kwargs):
+        ## Add a thread to run the ML Aadhar Model in background 
+        def background_aadhar_model(**kwargs):
+            time.sleep(3)
             user_email = kwargs.get('user_email', {})
             name = kwargs.get('name', {})
             postDict = {'user_email': user_email, 'name': name}
             requests.post('http://localhost:5000/api/image/process/aadhar', json=postDict)
 
-        thread = threading.Thread(target=long_running_task, kwargs={'user_email': user_email, 'name': name})
+        ## Declare the thread target and send required arguments, then initiate it with thread.start()
+        thread = threading.Thread(target=background_aadhar_model, kwargs={'user_email': user_email, 'name': name})
         thread.start()
 
         return HttpApiResponse("Successfully uploaded picture")

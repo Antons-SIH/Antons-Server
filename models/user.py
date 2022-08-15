@@ -14,10 +14,13 @@ class UserModel(db.Model):
     user_type = db.Column(db.String(20))
     phone = db.Column(db.String(15))
     aadhar = db.Column(db.String(14), default=None)                   ## Aadhar No.
+    aadhar_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Aadhar remark
     aadhar_date = db.Column(db.DateTime(timezone=True), default=None) ## Last verified aadhar details
     pan = db.Column(db.String(14), default=None)                      ## Pan No.
+    pan_remark = db.Column(db.String(50), default='Upload Pan to verify')   ## Pan remark
     pan_date = db.Column(db.DateTime(timezone=True), default=None)    ## Last verified pan details
     seeded_bank_acc = db.Column(db.String(30), default=None)          ## Bank No.
+    seeded_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Bank remark
     seeded_date = db.Column(db.DateTime(timezone=True), default=None) ## Last verified bank details
 
     def __init__(self, email, password,college,name,user_type,phone):
