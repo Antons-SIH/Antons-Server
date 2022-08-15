@@ -4,6 +4,7 @@ from flask_cors import CORS
 from resources.user import Authentication
 from resources.upload import UploadAadhar, UploadPan
 from resources.details import GetDetails
+from resources.process import ProcessAadhar
 app = Flask(__name__)
 
 cors=CORS(app,resources={r'/api/*':{'origins':'*'}})
@@ -43,6 +44,7 @@ api.add_resource(App, '/api')
 api.add_resource(Authentication, *auth_routes)
 api.add_resource(UploadAadhar,'/api/image/upload/aadhar')
 api.add_resource(UploadPan,'/api/image/upload/pan')
+api.add_resource(ProcessAadhar,'/api/image/process/aadhar')
 api.add_resource(GetDetails,*details_routes)
 if __name__ == "__main__":
     
