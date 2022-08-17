@@ -40,12 +40,14 @@ class App(Resource):
 
 auth_routes=["/api/auth/login", "/api/auth/register","/api/auth/profile"]
 details_routes=["/api/details/admin","/api/details/super"]
+
 api.add_resource(App, '/api')
 api.add_resource(Authentication, *auth_routes)
 api.add_resource(UploadAadhar,'/api/image/upload/aadhar')
 api.add_resource(UploadPan,'/api/image/upload/pan')
 api.add_resource(ProcessAadhar,'/api/image/process/aadhar')
 api.add_resource(GetDetails,*details_routes)
+api.add_resource(CollegeDetails,'/api/college')
 if __name__ == "__main__":
     
     app.run(host="0.0.0.0", port=5000, debug=True)
