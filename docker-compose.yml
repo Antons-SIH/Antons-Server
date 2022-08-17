@@ -8,6 +8,8 @@ services:
       - PYTHONUNBUFFERED=1
     volumes:
       - .:/antons
+    env_file:
+      - .env
     networks:
       - webnet
 networks:

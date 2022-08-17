@@ -1,6 +1,6 @@
 from flask_restful import Resource, Api, reqparse
 from flask import request
-import werkzeug
+import werkzeug, os
 from models.user import UserModel
 from util.response import HttpApiResponse, HttpErrorResponse
 import threading, requests, time
@@ -26,7 +26,7 @@ class UploadAadhar(Resource):
             user_email = kwargs.get('user_email', {})
             name = kwargs.get('name', {})
             postDict = {'user_email': user_email, 'name': name}
-            requests.post('http://localhost:5000/api/image/process/aadhar', json=postDict)
+            requests.post(os.getenv("PROCESS_URL") + "/aadhar", json=postDict)
 
         ## Declare the thread target and send required arguments, then initiate it with thread.start()
         thread = threading.Thread(target=background_aadhar_model, kwargs={'user_email': user_email, 'name': name})

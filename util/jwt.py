@@ -1,13 +1,12 @@
-import jwt
-JWT_SECRET="ANTONS"
+import jwt, os
 
 def createToken(id):
     token=jwt.encode({
         'user_id': id
         # 'exp' : datetime.utcnow() + timedelta(minutes = 30)
-    },JWT_SECRET)
+    },os.getenv("JWT_SECRET"))
     return token
 
 def decodeToken(token):
-    payload=jwt.decode(token,JWT_SECRET)
+    payload=jwt.decode(token, os.getenv("JWT_SECRET"))
     return payload['user_id']

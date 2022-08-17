@@ -1,15 +1,18 @@
 from flask import Flask, request
+import os
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 from resources.user import Authentication
 from resources.upload import UploadAadhar, UploadPan
 from resources.details import GetDetails
 from resources.process import ProcessAadhar
+from dotenv import load_dotenv
+
 app = Flask(__name__)
 
 cors=CORS(app,resources={r'/api/*':{'origins':'*'}})
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://antons:SIH-2022@antons-database.postgres.database.azure.com/postgres?sslmode=require'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("PG_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'
@@ -48,4 +51,4 @@ api.add_resource(ProcessAadhar,'/api/image/process/aadhar')
 api.add_resource(GetDetails,*details_routes)
 if __name__ == "__main__":
     
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=os.getenv("PORT"), debug=True)

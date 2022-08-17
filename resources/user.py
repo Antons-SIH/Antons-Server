@@ -7,8 +7,6 @@ from  werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.jwt import createToken,decodeToken
 
-JWT_SECRET="ANTONS"
-
 class Authentication(Resource):
     reg_parser = reqparse.RequestParser()
     reg_parser.add_argument('email', type=str, required=True, help="This field cannot be blank.")
