@@ -6,6 +6,7 @@ from resources.user import Authentication
 from resources.upload import UploadAadhar, UploadPan
 from resources.details import GetDetails
 from resources.process import ProcessAadhar
+from resources.college import CollegeDetails
 from dotenv import load_dotenv
 
 app = Flask(__name__)
