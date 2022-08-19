@@ -20,23 +20,25 @@ class GetDetails(Resource):
                 users=UserModel.find_college_users(findUser.college)
                 UserDetails=[]
                 for user in users:
-                    UserDetails.append({
-                        "id":user.id,
-                        "email":user.email,
-                        "college":user.college,
-                        "name":user.name,
-                        "user_type":user.user_type,
-                        "phone":user.phone,
-                        "aadhar":user.aadhar,
-                        "aadhar_remark":user.aadhar_remark,
-                        "aadhar_date":str(user.aadhar_date),
-                        "pan":user.pan,
-                        "pan_remark":user.pan_remark,
-                        "pan_date":str(user.pan_date),
-                        "seeded_bank_acc":user.seeded_bank_acc,
-                        "seeded_remark": user.seeded_remark,
-                        "seeded_date":str(user.seeded_date)
-                    })
+                    if user.user_type=="Student" or user.user_type=="Teacher":
+                        UserDetails.append({
+                            "id":user.id,
+                            "email":user.email,
+                            "college":user.college,
+                            "name":user.name,
+                            "user_type":user.user_type,
+                            "phone":user.phone,
+                            "aadhar":user.aadhar,
+                            "aadhar_remark":user.aadhar_remark,
+                            "aadhar_date":str(user.aadhar_date),
+                            "pan":user.pan,
+                            "pan_remark":user.pan_remark,
+                            "pan_date":str(user.pan_date),
+                            "seeded_bank_acc":user.seeded_bank_acc,
+                            "seeded_remark": user.seeded_remark,
+                            "seeded_date":str(user.seeded_date)
+                        })
+                print(UserDetails)
                 return HttpApiResponse(UserDetails),200
             else:
                 return HttpErrorResponse("Details cannot be fetched. User not authorised!"),404
@@ -53,23 +55,24 @@ class GetDetails(Resource):
                 users=UserModel.find_all()
                 UserDetails=[]
                 for user in users:
-                    UserDetails.append({
-                        "id":user.id,
-                        "email":user.email,
-                        "college":user.college,
-                        "name":user.name,
-                        "user_type":user.user_type,
-                        "phone":user.phone,
-                        "aadhar":user.aadhar,
-                        "aadhar_remark":user.aadhar_remark,
-                        "aadhar_date":str(user.aadhar_date),
-                        "pan":user.pan,
-                        "pan_remark":user.pan_remark,
-                        "pan_date":str(user.pan_date),
-                        "seeded_bank_acc":user.seeded_bank_acc,
-                        "seeded_remark": user.seeded_remark,
-                        "seeded_date":str(user.seeded_date)
-                    })
+                    if user.user_type=="Student" or user.user_type=="Teacher":
+                        UserDetails.append({
+                            "id":user.id,
+                            "email":user.email,
+                            "college":user.college,
+                            "name":user.name,
+                            "user_type":user.user_type,
+                            "phone":user.phone,
+                            "aadhar":user.aadhar,
+                            "aadhar_remark":user.aadhar_remark,
+                            "aadhar_date":str(user.aadhar_date),
+                            "pan":user.pan,
+                            "pan_remark":user.pan_remark,
+                            "pan_date":str(user.pan_date),
+                            "seeded_bank_acc":user.seeded_bank_acc,
+                            "seeded_remark": user.seeded_remark,
+                            "seeded_date":str(user.seeded_date)
+                        })
                 return HttpApiResponse(UserDetails),200
             else:
                 return HttpErrorResponse("Details cannot be fetched. User not authorised!"),404
