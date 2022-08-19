@@ -29,6 +29,7 @@ class ProcessAadhar(Resource):
         Dict = getAadharDictionary('images/'+name)
         aadharNumber = Dict["aadharNumber"]
         print('[Process:ProcessAadhar] Aadhar model execution done | User='+ user_email + ' | AadharNo='+ aadharNumber)
+        os.remove('images/'+name)
 
         postDict={'email':user_email,'msg':""}
 

@@ -7,8 +7,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.jwt import createToken,decodeToken
 
-JWT_SECRET="ANTONS"
-
 class GetDetails(Resource):
     def adminLogin(self):
         if 'Authorization' in request.headers:
