@@ -19,8 +19,8 @@ class ProcessAadhar(Resource):
 
         ## Get user and set remarks of aadhar and seeded bank to verifying for frontend
         user = UserModel.find_by_email(user_email)
-        # if not user:
-        #     return HttpErrorResponse ("No user found with this email"), 404
+        if not user:
+            return HttpErrorResponse ("No user found with this email"), 404
         user.aadhar_remark = 'Verifying Uploaded Data'
         user.seeded_remark = 'Verifying Uploaded Data'
         user.save_to_db()
