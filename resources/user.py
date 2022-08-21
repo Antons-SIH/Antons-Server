@@ -2,7 +2,7 @@ import json
 from urllib import response
 from sqlalchemy import null
 from flask_restful import (Resource, reqparse, request)
-from models.user import UserModel
+from models.aicte import AicteModel
 from  werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.jwt import createToken,decodeToken
@@ -24,19 +24,19 @@ class Authentication(Resource):
     def register(self):
         data = Authentication.reg_parser.parse_args()
 
-        if UserModel.find_by_email(data['email']):
+        if AicteModel.find_by_email(data['email']):
             return HttpErrorResponse({"message": "A user with that email already exists"}), 400
         
         password=generate_password_hash(data['password'])
         name=data['first_name']+" "+data['last_name']
-        user = UserModel(data['email'], password, data['college'], name, data['user_type'], data['phone'])
+        user = AicteModel(data['email'], password, data['college'], name, data['user_type'], data['phone'])
         user.save_to_db()
 
         return HttpApiResponse({"message": "User created successfully."}), 201
 
     def login(self):
         data = Authentication.log_parser.parse_args()
-        user=UserModel.find_by_email(data['email'])
+        user=AicteModel.find_by_email(data['email'])
         if not user:
             return HttpErrorResponse({"message": "User does not exist"}), 401
 
@@ -50,7 +50,7 @@ class Authentication(Resource):
         if 'Authorization' in request.headers:
             token=request.headers['Authorization']
             id=decodeToken(token)
-            user=UserModel.find_by_id(id)
+            user=AicteModel.find_by_id(id)
             if(user):
                 aadharIndexes = [0,1,2,3,4,5,6,7]
                 panIndexes = [0,1,2,3,4,5]
