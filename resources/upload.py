@@ -1,7 +1,7 @@
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
-from models.user import UserModel
+from models.aicte import AicteModel
 from util.response import HttpApiResponse, HttpErrorResponse
 import threading, requests, time
 
@@ -12,7 +12,7 @@ class UploadAadhar(Resource):
         image_file = request.files['file']
 
         ## Check if user exist with this email
-        user = UserModel.find_by_email(user_email)
+        user = AicteModel.find_by_email(user_email)
         if not user:
             return HttpErrorResponse ("No user found with this email"), 404
 

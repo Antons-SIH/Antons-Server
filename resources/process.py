@@ -4,7 +4,7 @@ from ml.OCR_dictionary import getAadharDictionary
 from models.aicte import AicteModel
 from models.uid import UidModel
 from models.npci import NpciModel
-from models.user import UserModel
+from models.aicte import AicteModel
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.time import nowTime
 import requests,os
@@ -18,7 +18,7 @@ class ProcessAadhar(Resource):
         name = input_json['name']
 
         ## Get user and set remarks of aadhar and seeded bank to verifying for frontend
-        user = UserModel.find_by_email(user_email)
+        user = AicteModel.find_by_email(user_email)
         if not user:
             return HttpErrorResponse ("No user found with this email"), 404
         user.aadhar_remark = 'Verifying Uploaded Data'
