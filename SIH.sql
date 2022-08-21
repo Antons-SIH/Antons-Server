@@ -5,19 +5,17 @@ CREATE TABLE "aicte" (
   "gender" varchar,
   "user_type" varchar,
   "aadhar" varchar,
-  "aadhar_date" date,
   "aadhar_remark" varchar,
   "seeded_bank_acc" varchar,
-  "seeded_date" date,
   "seeded_remark" varchar,
   "pan" varchar,
-  "pan_date" date,
   "pan_remark" varchar,
   "name" varchar,
   "college" varchar,
   "address" varchar,
   "dob" varchar,
   "admission_year" varchar,
+  "last_updated" date
 );
 
 CREATE TABLE "uid" (
