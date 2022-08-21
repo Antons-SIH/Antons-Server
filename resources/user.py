@@ -67,7 +67,7 @@ class Authentication(Resource):
                     for i in panIndexes:
                         pan = pan[:i] + new_character + pan[i+1:]
 
-                return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar, "aadhar_remark": user.aadhar_remark, "aadhar_date":str(user.aadhar_date),"pan":pan, "pan_remark":user.pan_remark, "pan_date":str(user.pan_date),"seeded_bank_acc":user.seeded_bank_acc,"seeded_remark": user.seeded_remark, "seeded_date":str(user.seeded_date)}), 200
+                return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar, "aadhar_remark": user.aadhar_remark,"pan":pan, "pan_remark":user.pan_remark, "seeded_bank_acc":user.seeded_bank_acc,"seeded_remark": user.seeded_remark,"dob":user.dob,"gender":user.gender,"last_updated":str(user.last_updated)}), 200
                 
             else:
                 return HttpErrorResponse("Information denied, no authentication!"),404
