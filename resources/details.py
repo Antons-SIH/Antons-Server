@@ -24,17 +24,18 @@ class GetDetails(Resource):
                             "email":user.email,
                             "college":user.college,
                             "name":user.name,
+                            "dob":user.dob,
+                            "admission_year": user.admission_year,
+                            "address": user.address,
                             "user_type":user.user_type,
                             "phone":user.phone,
                             "aadhar":user.aadhar,
                             "aadhar_remark":user.aadhar_remark,
-                            "aadhar_date":str(user.aadhar_date),
                             "pan":user.pan,
                             "pan_remark":user.pan_remark,
-                            "pan_date":str(user.pan_date),
                             "seeded_bank_acc":user.seeded_bank_acc,
                             "seeded_remark": user.seeded_remark,
-                            "seeded_date":str(user.seeded_date)
+                            "last_updated": str(user.last_updated)
                         })
                 print(UserDetails)
                 return HttpApiResponse(UserDetails),200
@@ -59,17 +60,17 @@ class GetDetails(Resource):
                             "email":user.email,
                             "college":user.college,
                             "name":user.name,
+                            "dob":user.dob,
+                            "admission_year": user.admission_year,
                             "user_type":user.user_type,
                             "phone":user.phone,
                             "aadhar":user.aadhar,
                             "aadhar_remark":user.aadhar_remark,
-                            "aadhar_date":str(user.aadhar_date),
                             "pan":user.pan,
                             "pan_remark":user.pan_remark,
-                            "pan_date":str(user.pan_date),
                             "seeded_bank_acc":user.seeded_bank_acc,
                             "seeded_remark": user.seeded_remark,
-                            "seeded_date":str(user.seeded_date)
+                            "last_updated": str(user.last_updated)
                         })
                 return HttpApiResponse(UserDetails),200
             else:

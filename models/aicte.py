@@ -53,3 +53,11 @@ class AicteModel(db.Model):
     @classmethod
     def find_by_id(cls,id):
         return cls.query.filter_by(id=id).first()
+
+    @classmethod 
+    def find_college_users(cls,college):
+        return cls.query.filter_by(college=college)
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
