@@ -1,46 +1,37 @@
+from enum import unique
+from pickle import TRUE
 from db import db
 from util.time import nowTime
 class AicteModel(db.Model):
     __tablename__ = 'aicte'
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(80),primary_key=True)
+    id = db.Column(db.Integer,primary_key=True)
+    email = db.Column(db.String(80),unique=True)
     password = db.Column(db.String(150))
     phone = db.Column(db.String(15))
     gender = db.Column(db.String(20))
     user_type = db.Column(db.String(20))
-    aadhar = db.Column(db.String(14))
+    aadhar = db.Column(db.String(14),unique=True)
     aadhar_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Aadhar remark
-    seeded_bank_acc = db.Column(db.String(30))
+    seeded_bank_acc = db.Column(db.String(30),unique=True)
     seeded_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Bank remark
-    pan = db.Column(db.String(14))
+    pan = db.Column(db.String(14),unique=True)
     pan_remark = db.Column(db.String(50), default='Upload Pan to verify')   ## Pan remark
     name = db.Column(db.String(100))
     college = db.Column(db.String(100))
     address=db.Column(db.String(100))
     dob = db.Column(db.DateTime(timezone=True), default=None)
-    admission_year=db.Column(db.String(5))
+    admission_year=db.Column(db.String(10))
     last_updated=db.Column(db.DateTime(timezone=True), default=nowTime())
 
-    def __init__(self,email,password,phone,gender,user_type,aadhar,aadhar_remark,aadhar_date, seeded_bank_acc,seeded_remark,seeded_date,pan,pan_remark,pan_date,name,college,address,dob,admission_year):
+    def __init__(self,email,password,phone,gender,user_type,name,college,admission_year):
         self.email=email
         self.password=password
         self.phone=phone
         self.gender = gender
         self.user_type=user_type
-        self.aadhar = aadhar
-        self.aadhar_remark=aadhar_remark
-        self.aadhar_date=aadhar_date
-        self.seeded_bank_acc = seeded_bank_acc
-        self.pan = pan
         self.name = name
         self.college = college
-        self.seeded_remark=seeded_remark
-        self.seeded_date=seeded_date
-        self.pan_remark=pan_remark
-        self.pan_date=pan_date
-        self.address=address
-        self.dob=dob
         self.admission_year=admission_year
 
     def save_to_db(self):

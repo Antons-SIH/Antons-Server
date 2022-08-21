@@ -16,6 +16,8 @@ class Authentication(Resource):
     reg_parser.add_argument('last_name',type=str,required=True, help="This field cannot be blank.")
     reg_parser.add_argument('user_type', type=str, required=True, help="This field cannot be blank.")
     reg_parser.add_argument('phone',type=str,required=True, help="This field cannot be blank.")
+    reg_parser.add_argument('admission_year',type=str,required=True, help="This field cannot be blank.")
+    reg_parser.add_argument('gender',type=str,required=True, help="This field cannot be blank.")
 
     log_parser = reqparse.RequestParser()
     log_parser.add_argument('email', type=str, required=True, help="This field cannot be blank.")
@@ -29,7 +31,8 @@ class Authentication(Resource):
         
         password=generate_password_hash(data['password'])
         name=data['first_name']+" "+data['last_name']
-        user = AicteModel(data['email'], password, data['college'], name, data['user_type'], data['phone'])
+        print(data['admission_year'])
+        user = AicteModel(data['email'], password,data['phone'],data['gender'],data['user_type'],name, data['college'], data['admission_year'])
         user.save_to_db()
 
         return HttpApiResponse({"message": "User created successfully."}), 201
