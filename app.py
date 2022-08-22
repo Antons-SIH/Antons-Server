@@ -5,7 +5,7 @@ from flask_cors import CORS
 from resources.user import Authentication
 from resources.upload import UploadAadhar, UploadPan
 from resources.details import GetDetails
-from resources.process import ProcessAadhar
+from resources.process import ProcessAadhar, ProcessPan
 from resources.college import CollegeDetails
 from resources.verification import Verification
 from dotenv import load_dotenv
@@ -52,6 +52,7 @@ api.add_resource(Authentication, *auth_routes)
 api.add_resource(UploadAadhar,'/api/image/upload/aadhar')
 api.add_resource(UploadPan,'/api/image/upload/pan')
 api.add_resource(ProcessAadhar,'/api/image/process/aadhar')
+api.add_resource(ProcessPan,'/api/image/process/pan')
 api.add_resource(GetDetails,*details_routes)
 api.add_resource(CollegeDetails,'/api/college')
 api.add_resource(Verification,*verification_routes)

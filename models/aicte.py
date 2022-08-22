@@ -20,7 +20,7 @@ class AicteModel(db.Model):
     name = db.Column(db.String(100))
     college = db.Column(db.String(100))
     address=db.Column(db.String(100))
-    dob = db.Column(db.DateTime(timezone=True), default=None)
+    dob = db.Column(db.Date)
     admission_year=db.Column(db.String(10))
     last_updated=db.Column(db.DateTime(timezone=True), default=nowTime())
     otp=db.Column(db.String(10))
