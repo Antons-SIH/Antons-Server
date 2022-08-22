@@ -15,7 +15,8 @@ CREATE TABLE "aicte" (
   "address" varchar,
   "dob" varchar,
   "admission_year" varchar,
-  "last_updated" date
+  "last_updated" date,
+  "otp" varchar
 );
 
 CREATE TABLE "uid" (

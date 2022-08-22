@@ -23,6 +23,7 @@ class AicteModel(db.Model):
     dob = db.Column(db.DateTime(timezone=True), default=None)
     admission_year=db.Column(db.String(10))
     last_updated=db.Column(db.DateTime(timezone=True), default=nowTime())
+    otp=db.Column(db.String(10))
 
     def __init__(self,email,password,phone,gender,user_type,name,college,admission_year):
         self.email=email

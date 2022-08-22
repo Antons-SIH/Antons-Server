@@ -43,7 +43,7 @@ class App(Resource):
         return "Welcome to Antons-Flask-Backend"
 
 
-auth_routes=["/api/auth/login", "/api/auth/register","/api/auth/profile"]
+auth_routes=["/api/auth/login", "/api/auth/register","/api/auth/profile", "/api/auth/verify"]
 details_routes=["/api/details/admin","/api/details/super"]
 verification_routes=["/api/verify/admin","/api/verify/super"]
 
