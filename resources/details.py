@@ -37,7 +37,6 @@ class GetDetails(Resource):
                             "seeded_remark": user.seeded_remark,
                             "last_updated": str(user.last_updated)
                         })
-                print(UserDetails)
                 return HttpApiResponse(UserDetails),200
             else:
                 return HttpErrorResponse("Details cannot be fetched. User not authorised!"),404
