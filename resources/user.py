@@ -6,6 +6,7 @@ from models.aicte import AicteModel
 from  werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.jwt import createToken,decodeToken
+import random, math, requests,os
 
 class Authentication(Resource):
     reg_parser = reqparse.RequestParser()
@@ -43,10 +44,39 @@ class Authentication(Resource):
             return HttpErrorResponse({"message": "User does not exist"}), 401
 
         if check_password_hash(user.password, data['password']):
-            token=createToken(user.id)
-            return HttpApiResponse({"token":token.decode('UTF-8'), "email": user.email,"user_type": user.user_type, "college": user.college,"message":"token sent"}), 201
+
+            ## Generate OTP
+            digits = [i for i in range(0, 10)]
+            otp = ""
+
+            for i in range(6):
+                index = math.floor(random.random() * 10)
+                otp += str(digits[index])
+
+            user.otp = otp
+            user.save_to_db()
+
+            postDict={'email':data['email'], 'msg':"Your OTP for login at AICTE portal is: " + otp}
+            requests.post(os.getenv("EMAIL_URL"),json=postDict)
+
+            return HttpApiResponse({"email": user.email,"user_type": user.user_type, "college": user.college,"message":"token sent"}), 201
         
         return HttpErrorResponse({"message":"invalid password"}), 403
+
+
+    def VerifyOtp(self):
+        email = request.form['email']
+        otp = str(request.form['otp'])
+        user=AicteModel.find_by_email(email)
+
+        if not user:
+            return HttpErrorResponse({"message": "User does not exist"}), 401
+
+        if user.otp == otp:
+            token=createToken(user.id)
+            return HttpApiResponse({"token":token.decode('UTF-8'), "email": user.email,"user_type": user.user_type, "college": user.college,"message":"token sent"}), 201 
+        
+        return HttpErrorResponse({"message":"invalid otp"}), 403
 
     def profile(self):
         if 'Authorization' in request.headers:
@@ -80,6 +110,8 @@ class Authentication(Resource):
             return self.login()
         elif "register" in url:
             return self.register()
+        elif "verify" in url:
+            return self.VerifyOtp()
 
     def get(self):
         url = request.url
