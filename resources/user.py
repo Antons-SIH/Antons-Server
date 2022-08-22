@@ -24,6 +24,11 @@ class Authentication(Resource):
     log_parser.add_argument('email', type=str, required=True, help="This field cannot be blank.")
     log_parser.add_argument('password', type=str, required=True, help="This field cannot be blank.")
 
+    verify_parser = reqparse.RequestParser()
+    verify_parser.add_argument('email', type=str, required=True, help="This field cannot be blank.")
+    verify_parser.add_argument('password', type=str, required=True, help="This field cannot be blank.")
+    verify_parser.add_argument('otp', type=str, required=True, help="This field cannot be blank.")
+
     def register(self):
         data = Authentication.reg_parser.parse_args()
 
@@ -65,8 +70,10 @@ class Authentication(Resource):
 
 
     def VerifyOtp(self):
-        email = request.form['email']
-        otp = str(request.form['otp'])
+        data = Authentication.verify_parser.parse_args()
+        email = data['email']
+        password = data['password']
+        otp = data['otp']
         user=AicteModel.find_by_email(email)
 
         if not user:

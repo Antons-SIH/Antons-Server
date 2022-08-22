@@ -1,6 +1,6 @@
 from flask_restful import Resource, Api, reqparse
 from flask import request
-from ml.OCR_dictionary import getAadharDictionary
+from ml.Aadhar.OCR_dictionary import getAadharDictionary
 from models.aicte import AicteModel
 from models.uid import UidModel
 from models.npci import NpciModel

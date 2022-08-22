@@ -4,6 +4,7 @@ import werkzeug, os
 from models.aicte import AicteModel
 from util.response import HttpApiResponse, HttpErrorResponse
 import threading, requests, time
+from subprocess import call
 
 # Check for user in AICTE database - DONE
 # Upload Images, check if already present then do not go further
@@ -51,10 +52,11 @@ class UploadAadhar(Resource):
 ## This will just run first time to check the aadhar and get the user pan number
 class UploadPan(Resource):
     def post(self):
-        parse = reqparse.RequestParser()
-        parse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
-        args = parse.parse_args()
-        image_file = args['file']
-        name=image_file.filename
-        image_file.save('images/'+name+'.pan')
-        return ({"messag":"Pan received successfully!", "filename":name})
+
+        image_file = request.files['file']
+        name='pan'
+        image_file.save('images/'+name)
+
+        call(["python3","ml/Pan/PanDict.py"])
+        f=open("write.txt","r")
+        return f.read()
