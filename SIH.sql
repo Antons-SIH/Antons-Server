@@ -1,22 +1,21 @@
-CREATE TABLE "users" (
+CREATE TABLE "aicte" (
   "email" varchar PRIMARY KEY,
   "password" varchar,
-  "college" varchar,
-  "name" varchar,
-  "user_type" smallint,
   "phone" varchar,
+  "gender" varchar,
+  "user_type" varchar,
   "aadhar" varchar,
-  "pan" varchar,
-  "seeded_bank_acc" varchar
-);
-
-CREATE TABLE "aicte" (
-  "aadhar" varchar PRIMARY KEY,
+  "aadhar_remark" varchar,
   "seeded_bank_acc" varchar,
+  "seeded_remark" varchar,
   "pan" varchar,
+  "pan_remark" varchar,
   "name" varchar,
   "college" varchar,
-  "gender" varchar
+  "address" varchar,
+  "dob" varchar,
+  "admission_year" varchar,
+  "last_updated" date
 );
 
 CREATE TABLE "uid" (
@@ -24,7 +23,8 @@ CREATE TABLE "uid" (
   "name" varchar,
   "gender" varchar,
   "address" varchar,
-  "dob" date
+  "dob" date,
+  "phone" varchar
 );
 
 CREATE TABLE "npci" (

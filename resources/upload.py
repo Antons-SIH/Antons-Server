@@ -1,10 +1,19 @@
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
-from models.user import UserModel
+from models.aicte import AicteModel
 from util.response import HttpApiResponse, HttpErrorResponse
 import threading, requests, time
 
+# Check for user in AICTE database - DONE
+# Upload Images, check if already present then do not go further
+# Save image and make a new thread to take out the extracted text
+# Check for the NA values
+# Check for existing no. to be present in UID & NPCI database and update the fields
+# If any changes in the fields then update last_updated
+
+
+## This will just run first time to check the aadhar and get the user aadhar number
 class UploadAadhar(Resource):
     def post(self):
 
@@ -12,9 +21,13 @@ class UploadAadhar(Resource):
         image_file = request.files['file']
 
         ## Check if user exist with this email
-        user = UserModel.find_by_email(user_email)
+        user = AicteModel.find_by_email(user_email)
         if not user:
             return HttpErrorResponse ("No user found with this email"), 404
+
+        ## Check if aadhar already present then don't go further
+        if user.aadhar:
+            return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
         ## Get image and upload for analysis
         name=image_file.filename
@@ -35,6 +48,7 @@ class UploadAadhar(Resource):
         return HttpApiResponse("Successfully uploaded picture")
 
 
+## This will just run first time to check the aadhar and get the user pan number
 class UploadPan(Resource):
     def post(self):
         parse = reqparse.RequestParser()

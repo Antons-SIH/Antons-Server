@@ -10,7 +10,6 @@ class CollegeDetails(Resource):
 
     def post(self):
         data=CollegeDetails.reg_parser.parse_args()
-        print(data['college'])
         # if CollegeModel.find_by_college(data['college']):
         #     return HttpErrorResponse({"message": "A college with that name already exists"}), 400
 

@@ -4,7 +4,7 @@ from ml.OCR_dictionary import getAadharDictionary
 from models.aicte import AicteModel
 from models.uid import UidModel
 from models.npci import NpciModel
-from models.user import UserModel
+from models.aicte import AicteModel
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.time import nowTime
 import requests,os
@@ -18,9 +18,14 @@ class ProcessAadhar(Resource):
         name = input_json['name']
 
         ## Get user and set remarks of aadhar and seeded bank to verifying for frontend
-        user = UserModel.find_by_email(user_email)
+        user = AicteModel.find_by_email(user_email)
         if not user:
             return HttpErrorResponse ("No user found with this email"), 404
+        
+        ## Check if aadhar already present then don't go further
+        if user.aadhar:
+            return HttpErrorResponse ("Cannot upload, not a new user"), 400
+
         user.aadhar_remark = 'Verifying Uploaded Data'
         user.seeded_remark = 'Verifying Uploaded Data'
         user.save_to_db()
@@ -46,21 +51,21 @@ class ProcessAadhar(Resource):
 
             return HttpErrorResponse ("Upload again, image not clear"), 400
 
-        ## Check it with AICTE database
-        aicteData = AicteModel.find_by_aadhar(aadharNumber)
-        if not aicteData:
-            print('[Process:ProcessAadhar] Aadhar does not exists in AICTE database | AadharNo='+ aadharNumber + ' | --ExitProcess--')
-            user.aadhar_remark = 'Failed, Aadhar does not exist with AICTE'
-            user.seeded_remark = 'Failed, Aadhar does not exist with AICTE'
-            user.save_to_db()
+        # ## Check it with AICTE database
+        # aicteData = AicteModel.find_by_aadhar(aadharNumber)
+        # if not aicteData:
+        #     print('[Process:ProcessAadhar] Aadhar does not exists in AICTE database | AadharNo='+ aadharNumber + ' | --ExitProcess--')
+        #     user.aadhar_remark = 'Failed, Aadhar does not exist with AICTE'
+        #     user.seeded_remark = 'Failed, Aadhar does not exist with AICTE'
+        #     user.save_to_db()
 
-            #sending mail
-            postDict['msg']='Dear '+user.name+', the data corresponding to details uploaded by you does not exist on AICTE portal. Please re-upload the document or contact college administration for more details.'
-            requests.post(os.getenv("EMAIL_URL"),json=postDict)
+        #     #sending mail
+        #     postDict['msg']='Dear '+user.name+', the data corresponding to details uploaded by you does not exist on AICTE portal. Please re-upload the document or contact college administration for more details.'
+        #     requests.post(os.getenv("EMAIL_URL"),json=postDict)
 
-            return HttpErrorResponse ('Aadhar does not exists in AICTE database'), 404
+        #     return HttpErrorResponse ('Aadhar does not exists in AICTE database'), 404
 
-        print('[Process:ProcessAadhar] Verified aadhar from AICTE Database | AadharNo='+ aadharNumber)
+        # print('[Process:ProcessAadhar] Verified aadhar from AICTE Database | AadharNo='+ aadharNumber)
 
         ## Check it with UID database
         uidData = UidModel.find_by_aadhar(aadharNumber)
@@ -79,10 +84,11 @@ class ProcessAadhar(Resource):
         else:
             user.aadhar = aadharNumber
             user.aadhar_remark = 'Aadhar Verified Successfully'
-            user.aadhar_date = nowTime()
-            user.updated_at = nowTime()
+            user.address = uidData.address
+            user.dob = uidData.dob
+            user.last_updated = nowTime()
             user.save_to_db()
-            print('[Process:ProcessAadhar] Verified aadhar from UID Database | AadharNo='+ aadharNumber)
+            print('[Process:ProcessAadhar] Verified & updated aadhar details from UID Database | AadharNo='+ aadharNumber)
             uidVerified = True
 
         ## Check it with NPCI database
@@ -92,17 +98,11 @@ class ProcessAadhar(Resource):
             user.seeded_remark = 'Failed, Aadhar does not exist with NPCI'
             user.save_to_db()
             npciVerified = False
-
-            #sending mail
-            # postDict['msg']='Dear '+user.name+', we could not find a seeded bank account linked to your aadhar number. Please re-upload the document or contact college administration for more details.'
-            # requests.post(os.getenv("EMAIL_URL"),json=postDict)
-
-            # return HttpErrorResponse ('Aadhar-Seeded Bank Account does not exists in NPCI database'), 404
+            
         else:
             user.seeded_bank_acc = npciData.seeded_bank_acc
             user.seeded_remark = 'Seeded Bank Verified Successfully'
-            user.seeded_date = nowTime()
-            user.updated_at = nowTime()
+            user.last_updated = nowTime()
             user.save_to_db()
             print('[Process:ProcessAadhar] Verified aadhar from NPCI Database | AadharNo='+ aadharNumber)
             npciVerified = True

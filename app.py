@@ -7,6 +7,7 @@ from resources.upload import UploadAadhar, UploadPan
 from resources.details import GetDetails
 from resources.process import ProcessAadhar
 from resources.college import CollegeDetails
+from resources.verification import Verification
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -44,6 +45,7 @@ class App(Resource):
 
 auth_routes=["/api/auth/login", "/api/auth/register","/api/auth/profile"]
 details_routes=["/api/details/admin","/api/details/super"]
+verification_routes=["/api/verify/admin","/api/verify/super"]
 
 api.add_resource(App, '/api')
 api.add_resource(Authentication, *auth_routes)
@@ -52,6 +54,8 @@ api.add_resource(UploadPan,'/api/image/upload/pan')
 api.add_resource(ProcessAadhar,'/api/image/process/aadhar')
 api.add_resource(GetDetails,*details_routes)
 api.add_resource(CollegeDetails,'/api/college')
+api.add_resource(Verification,*verification_routes)
+
 if __name__ == "__main__":
     
     app.run(host="0.0.0.0", port=os.getenv("PORT"), debug=True)

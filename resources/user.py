@@ -2,7 +2,7 @@ import json
 from urllib import response
 from sqlalchemy import null
 from flask_restful import (Resource, reqparse, request)
-from models.user import UserModel
+from models.aicte import AicteModel
 from  werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.jwt import createToken,decodeToken
@@ -16,6 +16,8 @@ class Authentication(Resource):
     reg_parser.add_argument('last_name',type=str,required=True, help="This field cannot be blank.")
     reg_parser.add_argument('user_type', type=str, required=True, help="This field cannot be blank.")
     reg_parser.add_argument('phone',type=str,required=True, help="This field cannot be blank.")
+    reg_parser.add_argument('admission_year',type=str,required=True, help="This field cannot be blank.")
+    reg_parser.add_argument('gender',type=str,required=True, help="This field cannot be blank.")
 
     log_parser = reqparse.RequestParser()
     log_parser.add_argument('email', type=str, required=True, help="This field cannot be blank.")
@@ -24,19 +26,19 @@ class Authentication(Resource):
     def register(self):
         data = Authentication.reg_parser.parse_args()
 
-        if UserModel.find_by_email(data['email']):
+        if AicteModel.find_by_email(data['email']):
             return HttpErrorResponse({"message": "A user with that email already exists"}), 400
         
         password=generate_password_hash(data['password'])
         name=data['first_name']+" "+data['last_name']
-        user = UserModel(data['email'], password, data['college'], name, data['user_type'], data['phone'])
+        user = AicteModel(data['email'], password,data['phone'],data['gender'],data['user_type'],name, data['college'], data['admission_year'])
         user.save_to_db()
 
         return HttpApiResponse({"message": "User created successfully."}), 201
 
     def login(self):
         data = Authentication.log_parser.parse_args()
-        user=UserModel.find_by_email(data['email'])
+        user=AicteModel.find_by_email(data['email'])
         if not user:
             return HttpErrorResponse({"message": "User does not exist"}), 401
 
@@ -50,7 +52,7 @@ class Authentication(Resource):
         if 'Authorization' in request.headers:
             token=request.headers['Authorization']
             id=decodeToken(token)
-            user=UserModel.find_by_id(id)
+            user=AicteModel.find_by_id(id)
             if(user):
                 aadharIndexes = [0,1,2,3,4,5,6,7]
                 panIndexes = [0,1,2,3,4,5]
@@ -64,7 +66,7 @@ class Authentication(Resource):
                     for i in panIndexes:
                         pan = pan[:i] + new_character + pan[i+1:]
 
-                return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar, "aadhar_remark": user.aadhar_remark, "aadhar_date":str(user.aadhar_date),"pan":pan, "pan_remark":user.pan_remark, "pan_date":str(user.pan_date),"seeded_bank_acc":user.seeded_bank_acc,"seeded_remark": user.seeded_remark, "seeded_date":str(user.seeded_date)}), 200
+                return HttpApiResponse({"id":user.id,"email":user.email,"college":user.college,"name":user.name,"user_type":user.user_type,"phone":user.phone,"aadhar":aadhar, "aadhar_remark": user.aadhar_remark,"pan":pan, "pan_remark":user.pan_remark, "seeded_bank_acc":user.seeded_bank_acc,"seeded_remark": user.seeded_remark,"dob":user.dob,"gender":user.gender,"last_updated":str(user.last_updated)}), 200
                 
             else:
                 return HttpErrorResponse("Information denied, no authentication!"),404

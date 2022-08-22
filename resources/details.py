@@ -2,7 +2,7 @@ import json
 from urllib import response
 from sqlalchemy import null
 from flask_restful import (Resource, reqparse, request)
-from models.user import UserModel
+from models.aicte import AicteModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from util.response import HttpApiResponse, HttpErrorResponse
 from util.jwt import createToken,decodeToken
@@ -12,10 +12,10 @@ class GetDetails(Resource):
         if 'Authorization' in request.headers:
             token=request.headers['Authorization']
             id=decodeToken(token)
-            findUser=UserModel.find_by_id(id)
+            findUser=AicteModel.find_by_id(id)
 
             if(findUser.user_type=="Admin"):
-                users=UserModel.find_college_users(findUser.college)
+                users=AicteModel.find_college_users(findUser.college)
                 UserDetails=[]
                 for user in users:
                     if user.user_type=="Student" or user.user_type=="Teacher":
@@ -24,17 +24,18 @@ class GetDetails(Resource):
                             "email":user.email,
                             "college":user.college,
                             "name":user.name,
+                            "dob":user.dob,
+                            "admission_year": user.admission_year,
+                            "address": user.address,
                             "user_type":user.user_type,
                             "phone":user.phone,
                             "aadhar":user.aadhar,
                             "aadhar_remark":user.aadhar_remark,
-                            "aadhar_date":str(user.aadhar_date),
                             "pan":user.pan,
                             "pan_remark":user.pan_remark,
-                            "pan_date":str(user.pan_date),
                             "seeded_bank_acc":user.seeded_bank_acc,
                             "seeded_remark": user.seeded_remark,
-                            "seeded_date":str(user.seeded_date)
+                            "last_updated": str(user.last_updated)
                         })
                 print(UserDetails)
                 return HttpApiResponse(UserDetails),200
@@ -47,10 +48,10 @@ class GetDetails(Resource):
         if 'Authorization' in request.headers:
             token=request.headers['Authorization']
             id=decodeToken(token)
-            findUser=UserModel.find_by_id(id)
+            findUser=AicteModel.find_by_id(id)
 
             if(findUser.user_type=="Super"):
-                users=UserModel.find_all()
+                users=AicteModel.find_all()
                 UserDetails=[]
                 for user in users:
                     if user.user_type=="Student" or user.user_type=="Teacher":
@@ -59,17 +60,17 @@ class GetDetails(Resource):
                             "email":user.email,
                             "college":user.college,
                             "name":user.name,
+                            "dob":user.dob,
+                            "admission_year": user.admission_year,
                             "user_type":user.user_type,
                             "phone":user.phone,
                             "aadhar":user.aadhar,
                             "aadhar_remark":user.aadhar_remark,
-                            "aadhar_date":str(user.aadhar_date),
                             "pan":user.pan,
                             "pan_remark":user.pan_remark,
-                            "pan_date":str(user.pan_date),
                             "seeded_bank_acc":user.seeded_bank_acc,
                             "seeded_remark": user.seeded_remark,
-                            "seeded_date":str(user.seeded_date)
+                            "last_updated": str(user.last_updated)
                         })
                 return HttpApiResponse(UserDetails),200
             else:
