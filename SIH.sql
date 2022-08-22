@@ -43,12 +43,8 @@ CREATE TABLE "pan" (
 /*
 
 inserting in UID table:
-INSERT INTO uid("aadhar","name","gender","address","dob") VALUES ('220945152786','Atharva Kinikar','M','Pune','2001-05-09');
-SELECT * FROM uid;
-
-inserting into users table:
-INSERT INTO users("email","password","college","name","user_type","phone") VALUES ('aryan@gmail.com','123','PICT','Aryan Agrawal','Student','1234567890')
-SELECT * FROM users;
+INSERT INTO uid("aadhar","name","gender","address","dob","phone")
+VALUES ('905443041059','Aryan Agrawal','Male','Pune','2002-03-22','8451889288');
 
 inserting in aicte table:
 INSERT INTO aicte("aadhar","seeded_bank_acc","pan","name","college","gender") VALUES ('220945152786','111111','PAN123','Atharva Kinikar','Pune Institute of Computer Technology','M');
