@@ -11,11 +11,11 @@ class AicteModel(db.Model):
     phone = db.Column(db.String(15))
     gender = db.Column(db.String(20))
     user_type = db.Column(db.String(20))
-    aadhar = db.Column(db.String(14),unique=True)
+    aadhar = db.Column(db.String(14))
     aadhar_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Aadhar remark
-    seeded_bank_acc = db.Column(db.String(30),unique=True)
+    seeded_bank_acc = db.Column(db.String(30))
     seeded_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Bank remark
-    pan = db.Column(db.String(14),unique=True)
+    pan = db.Column(db.String(14))
     pan_remark = db.Column(db.String(50), default='Upload Pan to verify')   ## Pan remark
     name = db.Column(db.String(100))
     college = db.Column(db.String(100))

@@ -31,7 +31,6 @@ class Authentication(Resource):
         
         password=generate_password_hash(data['password'])
         name=data['first_name']+" "+data['last_name']
-        print(data['admission_year'])
         user = AicteModel(data['email'], password,data['phone'],data['gender'],data['user_type'],name, data['college'], data['admission_year'])
         user.save_to_db()
 
