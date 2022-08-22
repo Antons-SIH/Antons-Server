@@ -14,6 +14,10 @@ RUN yes | apt install python3-dev libpq-dev
 
 RUN yes | pip3 install psycopg2
 
+RUN yes | python -m pip install --upgrade pip
+
+RUN yes | apt install tesseract-ocr
+
 RUN pip3 install -r requirements.txt
 
 COPY . /antons
