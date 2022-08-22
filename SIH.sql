@@ -58,4 +58,12 @@ inserting in npci table :
 INSERT INTO npci("aadhar","seeded_bank_acc") VALUES ('220945152786','111111');
 SELECT * FROM npci;
 
+inserting in pan table :
+INSERT INTO pan("pan", "name", "address", "dob") VALUES ('220945152786','111111', 'xyz', '2001-05-09');
+SELECT * FROM pan;
+
+inserting in college table :
+INSERT INTO college("id", "college") VALUES ('1-5592509','SCTR'S PUNE INSTITUTE OF COMPUTER TECHNOLOGY');
+SELECT * FROM college;
+
 */
