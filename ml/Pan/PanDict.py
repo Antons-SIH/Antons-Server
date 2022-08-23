@@ -50,7 +50,7 @@ class PanDictionary:
         # separate coordinates from box
         xmin, ymin, xmax, ymax = coords
         # get the subimage that makes up the bounded region and take an additional 2 pixels in the x direction
-        nplate = img[int(ymin) - 1:int(ymax) + 1, int(xmin) - 2:int(xmax) + 2]
+        nplate = img[int(ymin) - 1:int(ymax) + 1, int(xmin) - 3:int(xmax) + 3]
         global panNumber
         global panName
         global dob
