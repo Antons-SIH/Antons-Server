@@ -27,8 +27,8 @@ class UploadAadhar(Resource):
             return HttpErrorResponse ("No user found with this email"), 404
 
         ## Check if aadhar already present then don't go further
-        if user.aadhar:
-            return HttpErrorResponse ("Cannot upload, not a new user"), 400
+        # if user.aadhar:
+        #     return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
         ## Get image and upload for analysis
         name=image_file.filename
@@ -62,8 +62,8 @@ class UploadPan(Resource):
             return HttpErrorResponse ("No user found with this email"), 404
 
         ## Check if pan already present then don't go further
-        if user.pan:
-            return HttpErrorResponse ("Cannot upload, not a new user"), 400
+        # if user.pan:
+        #     return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
         name='pan'
         image_file.save('images/'+name)

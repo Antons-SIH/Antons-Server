@@ -25,8 +25,8 @@ class ProcessAadhar(Resource):
             return HttpErrorResponse ("No user found with this email"), 404
         
         ## Check if aadhar already present then don't go further
-        if user.aadhar:
-            return HttpErrorResponse ("Cannot upload, not a new user"), 400
+        # if user.aadhar:
+        #     return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
         user.aadhar_remark = 'Verifying Uploaded Data'
         user.seeded_remark = 'Verifying Uploaded Data'
@@ -138,8 +138,8 @@ class ProcessPan(Resource):
             return HttpErrorResponse ("No user found with this email"), 404
         
         ## Check if aadhar already present then don't go further
-        if user.pan:
-            return HttpErrorResponse ("Cannot upload, not a new user"), 400
+        # if user.pan:
+        #     return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
         user.pan_remark = 'Verifying Uploaded Data'
         user.save_to_db()
