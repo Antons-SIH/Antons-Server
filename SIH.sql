@@ -6,6 +6,7 @@ CREATE TABLE "aicte" (
   "user_type" varchar,
   "aadhar" varchar,
   "aadhar_remark" varchar,
+  "aadhar_phone" varchar,
   "seeded_bank_acc" varchar,
   "seeded_remark" varchar,
   "pan" varchar,
@@ -46,9 +47,19 @@ inserting in UID table:
 INSERT INTO uid("aadhar","name","gender","address","dob","phone")
 VALUES ('905443041059','Aryan Agrawal','Male','Pune','2002-03-22','8451889288');
 
+INSERT INTO uid("aadhar","name","gender","address","dob","phone")
+VALUES ('905443041059','Aryan Agrawal','Male','Pune','2002-03-22','8451889288');
+
+
+-----------------xx------------------
+
 inserting in aicte table:
-INSERT INTO aicte("aadhar","seeded_bank_acc","pan","name","college","gender") VALUES ('220945152786','111111','PAN123','Atharva Kinikar','Pune Institute of Computer Technology','M');
+INSERT INTO aicte("aadhar","seeded_bank_acc","pan","name","college","gender") VALUES ('220945152786','111111','PAN123','Atharva Kinikar','Pune Institute of Computer Technology','Male');
 SELECT * FROM aicte;
+
+INSERT INTO aicte("aadhar","seeded_bank_acc","pan","name","college","gender") VALUES ('220945152786','111111','PAN123','Atharva Kinikar','Pune Institute of Computer Technology','Male');
+SELECT * FROM aicte;
+
 
 inserting in npci table :
 INSERT INTO npci("aadhar","seeded_bank_acc") VALUES ('220945152786','111111');

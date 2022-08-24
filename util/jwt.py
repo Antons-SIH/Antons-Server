@@ -8,5 +8,5 @@ def createToken(id):
     return token
 
 def decodeToken(token):
-    payload=jwt.decode(token, os.getenv("JWT_SECRET"))
+    payload=jwt.decode(token, os.getenv("JWT_SECRET"),algorithms=['HS256'])
     return payload['user_id']

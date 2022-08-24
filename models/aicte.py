@@ -13,6 +13,7 @@ class AicteModel(db.Model):
     user_type = db.Column(db.String(20))
     aadhar = db.Column(db.String(14))
     aadhar_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Aadhar remark
+    aadhar_phone=db.Column(db.String(15))
     seeded_bank_acc = db.Column(db.String(30))
     seeded_remark = db.Column(db.String(50), default='Upload Aadhar to verify')## Bank remark
     pan = db.Column(db.String(14))

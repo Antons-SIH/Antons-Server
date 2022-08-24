@@ -8,6 +8,7 @@ from resources.details import GetDetails
 from resources.process import ProcessAadhar, ProcessPan
 from resources.college import CollegeDetails
 from resources.verification import Verification
+from resources.otp import PhoneOtp
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -46,6 +47,7 @@ class App(Resource):
 auth_routes=["/api/auth/login", "/api/auth/register","/api/auth/profile", "/api/auth/verify"]
 details_routes=["/api/details/admin","/api/details/super"]
 verification_routes=["/api/verify/admin","/api/verify/super"]
+otp_routes=["/api/phone/sendotp","/api/phone/verifyotp"]
 
 api.add_resource(App, '/api')
 api.add_resource(Authentication, *auth_routes)
@@ -56,6 +58,7 @@ api.add_resource(ProcessPan,'/api/image/process/pan')
 api.add_resource(GetDetails,*details_routes)
 api.add_resource(CollegeDetails,'/api/college')
 api.add_resource(Verification,*verification_routes)
+api.add_resource(PhoneOtp,*otp_routes)
 
 if __name__ == "__main__":
     
