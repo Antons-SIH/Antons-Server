@@ -123,6 +123,13 @@ if __name__ == '__main__':
 
     obj=PanDictionary("ml/Pan/yolov5","ml/Pan/best.pt","ml/Pan/Dump","images/pan")
     str=obj.getPanNumber()
+
+    special_characters = "!@#$%^&*()-+?_=,<>/"
+
+    str = ''.join(letter for letter in str if letter.isalnum())
+    if not len(str)==10:
+        str = "NA"
+
     print(str)
     if not str:
         str="NA"
