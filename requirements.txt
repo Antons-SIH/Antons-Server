@@ -59,7 +59,7 @@ pure-eval==0.2.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 Pygments==2.13.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyparsing==3.0.9
 pytesseract==0.3.10
 python-bidi==0.4.2
@@ -87,6 +87,7 @@ torch==1.12.1
 torchvision==0.13.1
 tqdm==4.64.0
 traitlets==5.3.0
+twilio==7.12.1
 typing==3.7.4.3
 typing_extensions==4.3.0
 urllib3==1.26.11
