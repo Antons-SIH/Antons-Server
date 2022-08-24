@@ -81,7 +81,7 @@ class Authentication(Resource):
 
         if user.otp == otp:
             token=createToken(user.id)
-            return HttpApiResponse({"token":token.decode('UTF-8'), "email": user.email,"user_type": user.user_type, "college": user.college,"message":"token sent"}), 201 
+            return HttpApiResponse({"token":token, "email": user.email,"user_type": user.user_type, "college": user.college,"message":"token sent"}), 201 
         
         return HttpErrorResponse({"message":"invalid otp"}), 403
 
