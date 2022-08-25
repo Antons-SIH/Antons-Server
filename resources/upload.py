@@ -20,8 +20,8 @@ class UploadAadhar(Resource):
         user_email = request.form['email']
         # image_file = request.files['file']
         filestring = request.form['filestring']
-        filestring=filestring[9:]
-        filestring=filestring.rstrip(filestring[-1])
+        # filestring=filestring[9:]
+        # filestring=filestring.rstrip(filestring[-1])
         decoded_data=base64.b64decode((filestring))
         img_file = open('images/image.jpeg', 'wb')
         img_file.write(decoded_data)
