@@ -4,7 +4,8 @@ import werkzeug, os
 from models.aicte import AicteModel
 from util.response import HttpApiResponse, HttpErrorResponse
 import threading, requests, time
-from models.pan import PanModel 
+from models.pan import PanModel
+import base64 
 # Check for user in AICTE database - DONE
 # Upload Images, check if already present then do not go further
 # Save image and make a new thread to take out the extracted text
@@ -31,7 +32,6 @@ class UploadAadhar(Resource):
         ## Get image and upload for analysis
         name=image_file.filename
         image_file.save('images/'+name)
-
         ## Add a thread to run the ML Aadhar Model in background 
         def background_aadhar_model(**kwargs):
             time.sleep(3)
