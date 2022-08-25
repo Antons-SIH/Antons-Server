@@ -18,15 +18,8 @@ import base64
 class UploadAadhar(Resource):
     def post(self):
         user_email = request.form['email']
-        # image_file = request.files['file']
+        image_file = request.files['file']
         filestring = request.form['filestring']
-        filestring=filestring[23:]
-        # filestring=filestring.rstrip(filestring[-1])
-        decoded_data=base64.b64decode((filestring))
-        img_file = open('images/image.jpeg', 'wb')
-        img_file.write(decoded_data)
-        img_file.close()
-
 
         # print(image_file)
         ## Check if user exist with this email
@@ -37,11 +30,22 @@ class UploadAadhar(Resource):
         ## Check if aadhar already present then don't go further
         if user.aadhar:
             return HttpErrorResponse ("Cannot upload, not a new user"), 400
-        name="image.jpeg"
+
+        if(filestring):
+            filestring=filestring[23:]
+            # filestring=filestring.rstrip(filestring[-1])
+            decoded_data=base64.b64decode((filestring))
+            img_file = open('images/image.jpeg', 'wb')
+            img_file.write(decoded_data)
+            img_file.close()
+            name="image.jpeg"
+        
+        else:
         ## Get image and upload for analysis
-        # name=image_file.filename
-        # image_file.save('images/'+name)
-        ## Add a thread to run the ML Aadhar Model in background 
+            name=image_file.filename
+            image_file.save('images/'+name)
+        ## Add a thread to run the ML Aadhar Model in background
+
         def background_aadhar_model(**kwargs):
             time.sleep(3)
             user_email = kwargs.get('user_email', {})
