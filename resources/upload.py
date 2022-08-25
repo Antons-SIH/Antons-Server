@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
@@ -31,7 +32,7 @@ class UploadAadhar(Resource):
         if user.aadhar:
             return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
-        if(filestring):
+        if(image_file==NULL):
             filestring=filestring[23:]
             # filestring=filestring.rstrip(filestring[-1])
             decoded_data=base64.b64decode((filestring))
