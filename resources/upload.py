@@ -20,7 +20,7 @@ class UploadAadhar(Resource):
 
         user_email = request.form['email']
         image_file = request.files['file']
-
+        print(image_file)
         ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)
         if not user:
