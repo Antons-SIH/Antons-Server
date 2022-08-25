@@ -22,10 +22,10 @@ class UploadAadhar(Resource):
         filestring = request.form['filestring']
 
         decoded_data=base64.b64decode((filestring))
-        img_file = open('images/image.jpeg', 'wb')
+        img_file = open('aadhar.jpeg', 'wb')
         img_file.write(decoded_data)
         img_file.close()
-        name="image.jpeg"
+        name="aadhar.jpeg"
         # print(image_file)
         ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)

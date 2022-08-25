@@ -33,7 +33,8 @@ class ProcessAadhar(Resource):
         user.save_to_db()
 
         ## Send it to the ML model to extract the card details
-        Dict = getAadharDictionary('images/'+name)
+        # Dict = getAadharDictionary('images/'+name)
+        Dict = getAadharDictionary(name)
         aadharNumber = Dict["aadharNumber"]
         print('[Process:ProcessAadhar] Aadhar model execution done | User='+ user_email + ' | AadharNo='+ aadharNumber)
         os.remove('images/'+name)
