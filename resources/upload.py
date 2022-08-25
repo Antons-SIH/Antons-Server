@@ -25,7 +25,7 @@ class UploadAadhar(Resource):
         img_file = open('aadhar.jpeg', 'wb')
         img_file.write(decoded_data)
         img_file.close()
-        name="aadhar.jpeg"
+        name="aadhar"
         # print(image_file)
         ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)
