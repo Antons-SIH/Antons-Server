@@ -23,7 +23,7 @@ class AadharPhone(Resource):
         filestring=filestring[23:]
             # filestring=filestring.rstrip(filestring[-1])
         decoded_data=base64.b64decode((filestring))
-        img_file = open('images/image.jpeg', 'wb')
+        img_file = open('images/aadhar.jpeg', 'wb')
         img_file.write(decoded_data)
         img_file.close()
         name="aadhar.jpeg"
@@ -58,7 +58,7 @@ class PanPhone(Resource):
         filestring=filestring[23:]
             # filestring=filestring.rstrip(filestring[-1])
         decoded_data=base64.b64decode((filestring))
-        img_file = open('images/image.jpeg', 'wb')
+        img_file = open('images/pan.jpeg', 'wb')
         img_file.write(decoded_data)
         img_file.close()
         name="pan.jpeg"
