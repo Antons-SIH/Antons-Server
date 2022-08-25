@@ -1,4 +1,3 @@
-import base64
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
@@ -12,20 +11,13 @@ from models.pan import PanModel
 # Check for the NA values
 # Check for existing no. to be present in UID & NPCI database and update the fields
 # If any changes in the fields then update last_updated
-import base64
+
 
 ## This will just run first time to check the aadhar and get the user aadhar number
 class UploadAadhar(Resource):
     def post(self):
         user_email = request.form['email']
-        # image_file = request.files['file']
-        filestring = request.form['filestring']
-
-        decoded_data=base64.b64decode((filestring))
-        img_file = open('images/aadhar.jpeg', 'wb')
-        img_file.write(decoded_data)
-        img_file.close()
-        name="images/aadhar"
+        image_file = request.files['file']
         # print(image_file)
         ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)
@@ -37,8 +29,8 @@ class UploadAadhar(Resource):
             return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
         ## Get image and upload for analysis
-        # name=image_file.filename
-        # image_file.save('images/'+name)
+        name=image_file.filename
+        image_file.save('images/'+name)
 
         ## Add a thread to run the ML Aadhar Model in background 
         def background_aadhar_model(**kwargs):
