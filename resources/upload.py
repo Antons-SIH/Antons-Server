@@ -33,7 +33,6 @@ class UploadAadhar(Resource):
         ## Get image and upload for analysis
         name=image_file.filename
         image_file.save('images/'+name)
-        print('images/'+name)
 
         ## Add a thread to run the ML Aadhar Model in background 
         def background_aadhar_model(**kwargs):

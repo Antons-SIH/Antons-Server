@@ -50,4 +50,3 @@ def removeMarathiWordsfromImage(path):
     #testing
     # image.show()
     image.save(path)
-    print(path)
