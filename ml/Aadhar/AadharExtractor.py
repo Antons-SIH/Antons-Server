@@ -102,8 +102,9 @@ def getAadharDict(OcrList):
     for i in poppingList:
         garbage = OcrList.pop(i)
 
-    nameFlag = True
-    name = OcrList.pop(1)
+    if(len(OcrList)>=2):
+        nameFlag = True
+        name = OcrList.pop(1)
 
     Dict = {}
     if nameFlag == True:
