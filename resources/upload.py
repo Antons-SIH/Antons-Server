@@ -18,7 +18,7 @@ import base64
 class UploadAadhar(Resource):
     def post(self):
         user_email = request.form['email']
-        image_file = request.files['file']
+        # image_file = request.files['file']
         filestring = request.form['filestring']
         filestring=filestring[9:]
         filestring=filestring.rstrip(filestring[-1])
