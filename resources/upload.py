@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
@@ -32,7 +31,11 @@ class UploadAadhar(Resource):
         if user.aadhar:
             return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
-        if(image_file==NULL):
+        if(filestring=='null'):
+            name=image_file.filename
+            image_file.save('images/'+name)
+        
+        else:
             filestring=filestring[23:]
             # filestring=filestring.rstrip(filestring[-1])
             decoded_data=base64.b64decode((filestring))
@@ -40,11 +43,7 @@ class UploadAadhar(Resource):
             img_file.write(decoded_data)
             img_file.close()
             name="image.jpeg"
-        
-        else:
         ## Get image and upload for analysis
-            name=image_file.filename
-            image_file.save('images/'+name)
         ## Add a thread to run the ML Aadhar Model in background
 
         def background_aadhar_model(**kwargs):
