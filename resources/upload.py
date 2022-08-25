@@ -1,5 +1,4 @@
 import base64
-from tkinter import image_names
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
