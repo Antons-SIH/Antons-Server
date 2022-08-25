@@ -6,23 +6,12 @@ from util.response import HttpApiResponse, HttpErrorResponse
 import threading, requests, time
 from models.pan import PanModel
 import base64 
-# Check for user in AICTE database - DONE
-# Upload Images, check if already present then do not go further
-# Save image and make a new thread to take out the extracted text
-# Check for the NA values
-# Check for existing no. to be present in UID & NPCI database and update the fields
-# If any changes in the fields then update last_updated
 
-
-## This will just run first time to check the aadhar and get the user aadhar number
-class UploadAadhar(Resource):
+class AadharPhone(Resource):
     def post(self):
         user_email = request.form['email']
-        image_file = request.files['file']
+        filestring = request.form['filestring']
 
-        # print(user_email,image_file,filestring)
-        # print(image_file)
-        ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)
         if not user:
             return HttpErrorResponse ("No user found with this email"), 404
@@ -31,10 +20,13 @@ class UploadAadhar(Resource):
         if user.aadhar:
             return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
-        name=image_file.filename
-        image_file.save('images/'+name)
-        ## Get image and upload for analysis
-        ## Add a thread to run the ML Aadhar Model in background
+        filestring=filestring[23:]
+            # filestring=filestring.rstrip(filestring[-1])
+        decoded_data=base64.b64decode((filestring))
+        img_file = open('images/image.jpeg', 'wb')
+        img_file.write(decoded_data)
+        img_file.close()
+        name="aadhar.jpeg"
 
         def background_aadhar_model(**kwargs):
             time.sleep(3)
@@ -49,13 +41,10 @@ class UploadAadhar(Resource):
 
         return HttpApiResponse("Successfully uploaded picture")
 
-
-## This will just run first time to check the aadhar and get the user pan number
-class UploadPan(Resource):
+class PanPhone(Resource):
     def post(self):
-
         user_email = request.form['email']
-        image_file = request.files['file']
+        filestring = request.form['filestring']
 
         ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)
@@ -66,8 +55,13 @@ class UploadPan(Resource):
         if user.pan:
             return HttpErrorResponse ("Cannot upload, not a new user"), 400
 
-        name='pan'
-        image_file.save('images/'+name)
+        filestring=filestring[23:]
+            # filestring=filestring.rstrip(filestring[-1])
+        decoded_data=base64.b64decode((filestring))
+        img_file = open('images/image.jpeg', 'wb')
+        img_file.write(decoded_data)
+        img_file.close()
+        name="pan.jpeg"
 
         ## Add a thread to run the ML Pan Model in background 
         def background_pan_model(**kwargs):
@@ -82,3 +76,4 @@ class UploadPan(Resource):
         thread.start()
 
         return HttpApiResponse("Successfully uploaded picture")
+

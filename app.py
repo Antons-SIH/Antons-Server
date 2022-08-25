@@ -9,6 +9,8 @@ from resources.process import ProcessAadhar, ProcessPan
 from resources.college import CollegeDetails
 from resources.verification import Verification
 from resources.otp import PhoneOtp
+from resources.phone_upload import AadharPhone
+from resources.phone_upload import PanPhone
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -59,6 +61,8 @@ api.add_resource(GetDetails,*details_routes)
 api.add_resource(CollegeDetails,'/api/college')
 api.add_resource(Verification,*verification_routes)
 api.add_resource(PhoneOtp,*otp_routes)
+api.add_resource(AadharPhone, '/api/image/phone/aadhar')
+api.add_resource(PanPhone, '/api/image/phone/pan')
 
 if __name__ == "__main__":
     
