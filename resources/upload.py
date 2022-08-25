@@ -1,3 +1,4 @@
+import base64
 from flask_restful import Resource, Api, reqparse
 from flask import request
 import werkzeug, os
@@ -17,10 +18,10 @@ from models.pan import PanModel
 ## This will just run first time to check the aadhar and get the user aadhar number
 class UploadAadhar(Resource):
     def post(self):
-
         user_email = request.form['email']
         image_file = request.files['file']
-        print(image_file)
+        # file_string=request.files['filestring']
+        # print(image_file)
         ## Check if user exist with this email
         user = AicteModel.find_by_email(user_email)
         if not user:

@@ -9,7 +9,7 @@ def isEnglish(str):
 
 
 def getOCRListCoordinates(path):
-    im = PIL.Image.open(path)
+    # im = PIL.Image.open(path)
 
     reader = easyocr.Reader(['en', 'mr'])
     # Bounds = reader.readtext(path, text_threshold=0.95, contrast_ths=0.35, adjust_contrast=0.05, add_margin=0.1, width_ths=0.7, decoder='beamsearch')
