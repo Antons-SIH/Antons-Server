@@ -9,8 +9,11 @@ def Facerec(path1,path2):
 #Encode faces from a folder
 # sfr = SimpleFacerec()
 # sfr.load_encoding_images("Test/")
+    print(path1, path2)
     img = cv2.imread(path1)
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+    # print(face_recognition.face_encodings(rgb_img))
+    print(len(face_recognition.face_encodings(rgb_img)))
     img_encoding = face_recognition.face_encodings(rgb_img)[0]
 
     img2 = cv2.imread(path2)
