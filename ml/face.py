@@ -17,8 +17,8 @@ def Facerec(path1,path2):
     img_encoding = face_recognition.face_encodings(rgb_img)[0]
 
     img2 = cv2.imread(path2)
-    half = cv2.resize(img2, (0,0), fx = 0.5, fy = 0.5) 
-    rgb_img2 = cv2.cvtColor(half, cv2.COLOR_BGR2RGB) 
+    # half = cv2.resize(img2, (0,0), fx = 0.5, fy = 0.5) 
+    rgb_img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB) 
     img_encoding2 = face_recognition.face_encodings(rgb_img2)[0]
 
     result = face_recognition.compare_faces([img_encoding], img_encoding2)
