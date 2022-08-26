@@ -42,6 +42,8 @@ class ProcessAadhar(Resource):
         uidImagePath=f"uidFace/{uidData.image}"
         ## Call Model for face and send face/aadhar.jpeg and user.image
         faceVerified=Facerec(uidImagePath, "face/aadhar.jpeg")
+
+        postDict={'email':user_email,'msg':""}
         
         ## If output is true then go forward else
         if not faceVerified:
@@ -53,8 +55,6 @@ class ProcessAadhar(Resource):
 
         print('[Process:ProcessAadhar] Aadhar model execution done | User='+ user_email + ' | AadharNo='+ aadharNumber)
         os.remove('images/'+name)
-
-        postDict={'email':user_email,'msg':""}
 
         ## If aadhar NA then upload again
         if aadharNumber == 'NA':
