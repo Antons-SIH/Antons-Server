@@ -42,6 +42,7 @@ class ProcessAadhar(Resource):
         uidImagePath=f"uidFace/{uidData.image}"
         ## Call Model for face and send face/aadhar.jpeg and user.image
         faceVerified=Facerec(uidImagePath, "face/aadhar.jpeg")
+        print(faceVerified)
 
         postDict={'email':user_email,'msg':""}
         
