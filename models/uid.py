@@ -10,6 +10,7 @@ class UidModel(db.Model):
     dob = db.Column(db.Date)
     phone = db.Column(db.String(15))
     image = db.Column(db.String(100))
+    image_str = db.Column(db.Text)
 
     def __init__(self, aadhar, name,gender,address,dob,phone):
         self.aadhar = aadhar
