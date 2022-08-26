@@ -22,6 +22,7 @@ def Facerec(path1,path2):
     img_encoding2 = face_recognition.face_encodings(rgb_img2)[0]
 
     result = face_recognition.compare_faces([img_encoding], img_encoding2)
+    print("face check done")
     return result
 
 # if __name__=='__main__':
