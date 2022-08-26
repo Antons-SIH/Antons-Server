@@ -46,7 +46,7 @@ class ProcessAadhar(Resource):
 
         if(uidData.phone!=user.phone):
             #sending mail
-            print("Number is not same cannot, --Exit Process--")
+            print("Number is not same cannot go forward, --Exit Process--")
             postDict['msg']='Dear '+user.name+', your registered number is not same as aadhar number. Please contact AICTE.'
             requests.post(os.getenv("EMAIL_URL"),json=postDict)
             return HttpErrorResponse ("Number is not same cannot, moving forward"), 400
