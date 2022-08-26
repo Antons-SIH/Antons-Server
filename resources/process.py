@@ -10,6 +10,7 @@ from util.response import HttpApiResponse, HttpErrorResponse
 from util.time import nowTime
 import requests,os
 from subprocess import call
+from ml.face import Facerec
 
 class ProcessAadhar(Resource):
     def post(self):
@@ -35,6 +36,21 @@ class ProcessAadhar(Resource):
         ## Send it to the ML model to extract the card details
         Dict = getAadharDictionary('images/'+name)
         aadharNumber = Dict["aadharNumber"]
+
+        ## Search uid database for user.image
+        uidData = UidModel.find_by_aadhar(aadharNumber)
+        uidImagePath=f"uidFace/{uidData.image}"
+        ## Call Model for face and send face/aadhar.jpeg and user.image
+        faceVerified=Facerec(uidImagePath, "face/aadhar.jpeg")
+        
+        ## If output is true then go forward else
+        if not faceVerified:
+            #sending mail
+            postDict['msg']='Dear '+user.name+', your Aadhar could not be verified because your face was not matched with the UID database. Please re-upload a clear photo of yourself on the AICTE portal.'
+            requests.post(os.getenv("EMAIL_URL"),json=postDict)
+            return HttpErrorResponse ("Face cannot be verified, upload again"), 400
+
+
         print('[Process:ProcessAadhar] Aadhar model execution done | User='+ user_email + ' | AadharNo='+ aadharNumber)
         os.remove('images/'+name)
 
