@@ -41,7 +41,7 @@ class ProcessAadhar(Resource):
         ## Search uid database for user.image
 
         uidData = UidModel.find_by_aadhar(aadharNumber)
-        face_base=uidData.image_str[23:]
+        face_base=uidData.image_str
         decoded_data=base64.b64decode((face_base))
         face_image=open('uidFace/db.jpeg', 'wb')
         face_image.write(decoded_data)
