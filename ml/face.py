@@ -23,7 +23,7 @@ def Facerec(path1,path2):
 
     result = face_recognition.compare_faces([img_encoding], img_encoding2)
     print("face check done")
-    return result
+    return result[0]
 
 # if __name__=='__main__':
 #     path1=r"C:\Users\dell\Desktop\face detector\Test\Atharva Nagmoti.jpg"
