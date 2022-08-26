@@ -11,6 +11,7 @@ from util.time import nowTime
 import requests,os
 from subprocess import call
 from ml.face import Facerec
+import base64
 
 class ProcessAadhar(Resource):
     def post(self):
@@ -38,8 +39,15 @@ class ProcessAadhar(Resource):
         aadharNumber = Dict["aadharNumber"]
 
         ## Search uid database for user.image
+
         uidData = UidModel.find_by_aadhar(aadharNumber)
-        uidImagePath=f"uidFace/{uidData.image}"
+        face_base=uidData.image_str[23:]
+        decoded_data=base64.b64decode((face_base))
+        face_image=open('uidFace/db.jpeg', 'wb')
+        face_image.write(decoded_data)
+        face_image.close()
+        uidImagePath=f"uidFace/db.jpeg"
+
         ## Call Model for face and send face/aadhar.jpeg and user.image
         faceVerified=Facerec(uidImagePath, "face/aadhar.jpeg")
         print(faceVerified)
