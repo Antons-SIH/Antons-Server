@@ -41,6 +41,16 @@ class ProcessAadhar(Resource):
         ## Search uid database for user.image
 
         uidData = UidModel.find_by_aadhar(aadharNumber)
+
+        postDict={'email':user_email,'msg':""}
+
+        if(uidData.phone!=user.phone):
+            #sending mail
+            print("Number is not same cannot, --Exit Process--")
+            postDict['msg']='Dear '+user.name+', your registered number is not same as aadhar number. Please contact AICTE.'
+            requests.post(os.getenv("EMAIL_URL"),json=postDict)
+            return HttpErrorResponse ("Number is not same cannot, moving forward"), 400
+
         face_base=uidData.image_str
         decoded_data=base64.b64decode((face_base))
         face_image=open('uidFace/db.jpeg', 'wb')
@@ -51,8 +61,6 @@ class ProcessAadhar(Resource):
         ## Call Model for face and send face/aadhar.jpeg and user.image
         faceVerified=Facerec(uidImagePath, "face/aadhar.jpeg")
         print(faceVerified)
-
-        postDict={'email':user_email,'msg':""}
         
         ## If output is true then go forward else
         if not faceVerified:
