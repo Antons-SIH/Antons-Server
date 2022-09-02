@@ -3,4 +3,4 @@
 ## Architecture
 
 ### Workflow :
-![Screenshot](./assets/OJ_Submission_Workflow.png)
+![Screenshot](./images/Antons-Workflow.drawio.png)
