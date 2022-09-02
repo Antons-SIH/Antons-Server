@@ -18,6 +18,10 @@ RUN yes | python -m pip install --upgrade pip
 
 RUN yes | apt install tesseract-ocr
 
+RUN yes | pip install cmake
+
+RUN yes | pip install dlib
+
 RUN pip3 install -r requirements.txt
 
 COPY . /antons

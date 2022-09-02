@@ -10,6 +10,8 @@ from util.response import HttpApiResponse, HttpErrorResponse
 from util.time import nowTime
 import requests,os
 from subprocess import call
+from ml.face import Facerec
+import base64
 
 class ProcessAadhar(Resource):
     def post(self):
@@ -35,10 +37,41 @@ class ProcessAadhar(Resource):
         ## Send it to the ML model to extract the card details
         Dict = getAadharDictionary('images/'+name)
         aadharNumber = Dict["aadharNumber"]
-        print('[Process:ProcessAadhar] Aadhar model execution done | User='+ user_email + ' | AadharNo='+ aadharNumber)
-        os.remove('images/'+name)
+
+        ## Search uid database for user.image
+
+        uidData = UidModel.find_by_aadhar(aadharNumber)
 
         postDict={'email':user_email,'msg':""}
+
+        if(uidData.phone!=user.phone):
+            #sending mail
+            print("Number is not same cannot go forward, --Exit Process--")
+            postDict['msg']='Dear '+user.name+', your registered number is not same as aadhar number. Please contact AICTE.'
+            requests.post(os.getenv("EMAIL_URL"),json=postDict)
+            return HttpErrorResponse ("Number is not same cannot, moving forward"), 400
+
+        face_base=uidData.image_str
+        decoded_data=base64.b64decode((face_base))
+        face_image=open('uidFace/db.jpeg', 'wb')
+        face_image.write(decoded_data)
+        face_image.close()
+        uidImagePath=f"uidFace/db.jpeg"
+
+        ## Call Model for face and send face/aadhar.jpeg and user.image
+        faceVerified=Facerec(uidImagePath, "face/aadhar.jpeg")
+        print(faceVerified)
+        
+        ## If output is true then go forward else
+        if not faceVerified:
+            #sending mail
+            postDict['msg']='Dear '+user.name+', your Aadhar could not be verified because your face was not matched with the UID database. Please re-upload a clear photo of yourself on the AICTE portal.'
+            requests.post(os.getenv("EMAIL_URL"),json=postDict)
+            return HttpErrorResponse ("Face cannot be verified, upload again"), 400
+
+
+        print('[Process:ProcessAadhar] Aadhar model execution done | User='+ user_email + ' | AadharNo='+ aadharNumber)
+        os.remove('images/'+name)
 
         ## If aadhar NA then upload again
         if aadharNumber == 'NA':
