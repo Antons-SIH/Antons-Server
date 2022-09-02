@@ -2,5 +2,5 @@
 
 ## Architecture
 
-### Workflow :
+## Workflow :
 ![Screenshot](./images/Antons-Workflow.drawio.png)
